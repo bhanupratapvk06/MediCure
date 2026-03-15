@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { HiOutlineMenu, HiX } from "react-icons/hi";
 import { MdEmergency, MdFavorite } from "react-icons/md";
-import Sidebar from "./Sidebar";
+import Sidebar from "./SideBar";
 
 const NavBar = () => {
   const [activeTab, setActiveTab] = useState(0);
