@@ -1,79 +1,91 @@
 import React from "react";
-import { FaBed } from "react-icons/fa";
+import { FaBed, FaAmbulance } from "react-icons/fa";
 import { BsClockFill } from "react-icons/bs";
-import { GiMedicines } from "react-icons/gi";
-import { GiCycle } from "react-icons/gi";
+import { MdSupportAgent } from "react-icons/md";
+import { Link } from "react-router-dom";
+import { IoArrowForward } from "react-icons/io5";
 
 const ChooseUs = () => {
   const features = [
     {
-      icon: <FaBed />,
-      title: "24/7 Emergency Medication Care",
-      description:
-        "We provide 24/7 emergency medication care with Medicure. Our team is always ready to help you.",
+      icon: <FaBed className="text-xl" />,
+      title: "24/7 Emergency Care",
+      description: "Round-the-clock medication care with our dedicated team always ready.",
+      color: "bg-primary-50 text-primary-500",
     },
     {
-      icon: <BsClockFill />,
-      title: "Emergency assistance time of 15 minutes or less",
+      icon: <BsClockFill className="text-xl" />,
+      title: "15 Min Response",
+      description: "Average response time under 15 minutes when you need help most.",
+      color: "bg-teal-50 text-teal-500",
     },
-    { icon: <GiCycle />, title: "24/7 Support" },
     {
-      icon: <GiMedicines />,
-      title: "Biggest fleet of ambulances across India",
+      icon: <MdSupportAgent className="text-xl" />,
+      title: "Always Available",
+      description: "Support team available around the clock to assist you anytime.",
+      color: "bg-violet-50 text-violet-500",
+    },
+    {
+      icon: <FaAmbulance className="text-xl" />,
+      title: "Pan-India Fleet",
+      description: "Largest ambulance network covering 500+ cities across India.",
+      color: "bg-amber-50 text-amber-500",
     },
   ];
 
   return (
-    <div className="h-screen w-screen mb-20">
-      <h1 className="text-[1.8rem] text-center font-bold pt-10">
-        Why Choose Us?
-      </h1>
-      <div>
-        <div className="w-full flex justify-center mt-16">
+    <section className="py-20 lg:py-28 bg-white">
+      <div className="max-w-6xl mx-auto px-4">
+        {/* Header */}
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-14">
+          <div>
+            <span className="text-primary-600 text-sm font-semibold tracking-wide uppercase">
+              Why MediCure
+            </span>
+            <h2 className="mt-3 text-3xl lg:text-4xl font-bold text-neutral-900 tracking-tight">
+              Built for emergencies,
+              <br />
+              trusted by millions
+            </h2>
+          </div>
+          <p className="text-neutral-500 max-w-md">
+            We combine technology and compassion to deliver life-saving care when
+            every minute counts.
+          </p>
+        </div>
+
+        {/* Features */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {features.map((feature, index) => (
-            <div key={index} className="p-6 flex items-center gap-7 w-80">
-              <div className="flex items-center text-5xl text-blue-400 justify-center">
+            <div
+              key={index}
+              className="group p-6 rounded-2xl border border-neutral-100 hover:border-neutral-200 hover:shadow-lg hover:shadow-neutral-100 transition-all duration-300"
+            >
+              <div
+                className={`w-12 h-12 rounded-xl ${feature.color} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-200`}
+              >
                 {feature.icon}
               </div>
-              <h3 className="text-[1.1rem] font-semibold">{feature.title}</h3>
+              <h3 className="font-bold text-neutral-900 mb-2">{feature.title}</h3>
+              <p className="text-sm text-neutral-500 leading-relaxed">
+                {feature.description}
+              </p>
             </div>
           ))}
         </div>
 
-        <div className="relative w-full h-[70vh] flex items-center">
-          <div className="z-20 absolute left-[23%] top-[38%] h-5 w-10 flex flex-col">
-            <img src="zigzag.png" className="object-cover h-3 w-full" alt="" />
-            <img src="zigzag.png" className="object-cover h-3 w-full" alt="" />
-            <img src="zigzag.png" className="object-cover h-3 w-full" alt="" />
-          </div>
-          <div className="absolute left-[24%] top-[10%] z-10 w-[20rem] h-[13rem] bg-amber-300 border-4 border-white rounded-2xl overflow-hidden">
-            <img
-              src="https://images.unsplash.com/photo-1576671081837-49000212a370?q=80&w=1998&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-              className="h-full w-full object-cover"
-              alt=""
-            />
-          </div>
-          <div className="absolute top-[40%] left-[36%] w-[23rem] h-[15rem] bg-amber-300 rounded-2xl overflow-hidden">
-            <img
-              src="https://images.unsplash.com/photo-1562411053-1d8bdfe771c1?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDI2N3x8fGVufDB8fHx8fA%3D%3D"
-              className="h-full w-full object-cover"
-              alt=""
-            />
-          </div>
-          <div
-            className={`absolute z-20 left-[42%] bottom-8 w-44 py-2 hover:tracking-widest text-center border-[3px] border-white text-xl hover:bg-teal-600 bg-teal-500 text-white font-semibold rounded-lg transition-all duration-300 cursor-pointer`}
+        {/* CTA */}
+        <div className="text-center mt-12">
+          <Link
+            to="/services"
+            className="inline-flex items-center gap-2 text-primary-600 font-semibold hover:text-primary-700 transition-colors group"
           >
-            Subscribe
-          </div>
-          <div className="z-20 absolute right-[39%] bottom-24 h-5 w-10 flex flex-col">
-            <img src="zigzag.png" className="object-cover h-3 w-full" alt="" />
-            <img src="zigzag.png" className="object-cover h-3 w-full" alt="" />
-            <img src="zigzag.png" className="object-cover h-3 w-full" alt="" />
-          </div>
-          <img src="choose.png" className="absolute h-80 bottom-10 right-24" alt=""/>
+            Explore all services
+            <IoArrowForward className="group-hover:translate-x-1 transition-transform" />
+          </Link>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

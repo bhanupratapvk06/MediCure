@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import {
   MdOutlineSearch,
   MdOutlineVerified,
@@ -11,86 +12,91 @@ import {
 const Features = () => {
   const features = [
     {
-      label: "Easy Medicine Search",
-      path: "/search",
-      icon: <MdOutlineSearch size={50} className="text-teal-400" />,
-      description:
-        "Search for critical medicines and injections by name, category, or type.",
+      label: "Medicine Search",
+      path: "/medication",
+      icon: <MdOutlineSearch />,
+      description: "Search critical medicines by name, category, or type.",
+      gradient: "from-blue-500 to-blue-600",
     },
     {
-      label: "Verified Suppliers & Hospitals",
+      label: "Verified Suppliers",
       path: "/verified-suppliers",
-      icon: <MdOutlineVerified size={50} className="text-teal-400" />,
-      description:
-        "Ensures authenticity with strict verification processes for suppliers and hospitals.",
+      icon: <MdOutlineVerified />,
+      description: "Strict verification for all suppliers and hospitals.",
+      gradient: "from-teal-500 to-teal-600",
     },
     {
-      label: "Secure Prescription Upload",
+      label: "Prescription Upload",
       path: "/upload-prescription",
-      icon: <MdOutlineUploadFile size={50} className="text-teal-400" />,
-      description:
-        "Upload prescriptions for validation to ensure proper usage and compliance.",
+      icon: <MdOutlineUploadFile />,
+      description: "Upload prescriptions for quick validation.",
+      gradient: "from-violet-500 to-violet-600",
     },
     {
-      label: "Live Order Tracking",
+      label: "Order Tracking",
       path: "/order-tracking",
-      icon: <MdOutlineLocationOn size={50} className="text-teal-400" />,
-      description:
-        "Monitor the status of your orders in real-time from request to delivery.",
+      icon: <MdOutlineLocationOn />,
+      description: "Real-time tracking from request to delivery.",
+      gradient: "from-amber-500 to-amber-600",
     },
     {
-      label: "Priority-based Emergency Handling",
+      label: "Priority Emergency",
       path: "/emergency-requests",
-      icon: <MdOutlinePriorityHigh size={50} className="text-teal-400" />,
-      description:
-        "Flag urgent requirements to notify verified suppliers immediately.",
+      icon: <MdOutlinePriorityHigh />,
+      description: "Flag urgent requirements for immediate action.",
+      gradient: "from-rose-500 to-rose-600",
     },
     {
-      label: "Rare Injection Assistance",
+      label: "Rare Injections",
       path: "/rare-injections",
-      icon: <MdOutlineMedicalServices size={50} className="text-teal-400" />,
-      description:
-        "Dedicated section for rare injections with hospital collaboration and approval.",
+      icon: <MdOutlineMedicalServices />,
+      description: "Hospital collaboration for hard-to-find injections.",
+      gradient: "from-emerald-500 to-emerald-600",
     },
   ];
 
   return (
-    <div className="w-full flex flex-col items-center justify-center">
-      <div className="bg-teal-100 w-full py-10 px-4">
-        <div className="w-full max-w-7xl mx-auto flex flex-col gap-10">
-          {/* Section Header */}
-          <div className="text-center">
-            <h1 className="text-3xl md:text-4xl font-bold">
-              App Features
-            </h1>
-            <p className="text-gray-500 mt-2 text-base md:text-lg">
-              Book medicines in emergency or in advance. Experience our
-              seamless platform.
-            </p>
-          </div>
+    <section className="py-20 lg:py-28 bg-neutral-50">
+      <div className="max-w-6xl mx-auto px-4">
+        {/* Header */}
+        <div className="text-center mb-14">
+          <span className="text-primary-600 text-sm font-semibold tracking-wide uppercase">
+            Features
+          </span>
+          <h2 className="mt-3 text-3xl lg:text-4xl font-bold text-neutral-900 tracking-tight">
+            Everything you need
+          </h2>
+          <p className="mt-3 text-neutral-500 text-lg max-w-xl mx-auto">
+            A complete platform for emergency healthcare and medicine delivery
+          </p>
+        </div>
 
-          {/* Features Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {features.map((feature, index) => (
+        {/* Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {features.map((feature, index) => (
+            <Link
+              key={index}
+              to={feature.path}
+              className="group flex items-start gap-4 p-5 rounded-2xl bg-white border border-neutral-100 hover:border-neutral-200 hover:shadow-md transition-all duration-200"
+            >
               <div
-                key={index}
-                className="bg-white rounded-xl shadow-md shadow-teal-200 p-6 flex flex-col items-start gap-4"
+                className={`w-11 h-11 rounded-xl bg-gradient-to-br ${feature.gradient} flex items-center justify-center text-white flex-shrink-0`}
               >
-                <div className="flex items-center gap-4">
-                  {feature.icon}
-                  <h1 className="text-xl md:text-2xl font-bold">
-                    {feature.label}
-                  </h1>
-                </div>
-                <p className="text-gray-500 text-sm md:text-base">
+                {React.cloneElement(feature.icon, { className: "text-xl" })}
+              </div>
+              <div>
+                <h3 className="font-bold text-neutral-900 text-sm mb-1 group-hover:text-primary-600 transition-colors">
+                  {feature.label}
+                </h3>
+                <p className="text-xs text-neutral-500 leading-relaxed">
                   {feature.description}
                 </p>
               </div>
-            ))}
-          </div>
+            </Link>
+          ))}
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

@@ -1,46 +1,141 @@
-import React from "react";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import {
+  FaFacebook,
+  FaTwitter,
+  FaInstagram,
+  FaLinkedin,
+} from "react-icons/fa";
+import {
+  IoMailOutline,
+  IoCallOutline,
+  IoLocationOutline,
+} from "react-icons/io5";
+import { MdKeyboardArrowUp, MdFavorite } from "react-icons/md";
 
 const Footer = () => {
+  const [email, setEmail] = useState("");
+
+  const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
+  const handleSubscribe = (e) => {
+    e.preventDefault();
+    setEmail("");
+  };
+
   return (
-    <footer className="bg-gray-900 text-white py-8">
-      <div className="container mx-auto px-6 lg:px-20 space-y-8">
-        {/* Quick Links */}
-        <nav className="flex flex-wrap justify-center gap-10 text-sm">
-          {["Home", "Features", "Contact Us", "Privacy Policy"].map((link) => (
-            <a
-              key={link}
-              href="#"
-              className="text-gray-300 hover:text-teal-300 transition-transform transform hover:scale-105"
-            >
-              {link}
-            </a>
-          ))}
-        </nav>
+    <footer className="bg-neutral-50 border-t border-neutral-100">
+      <div className="max-w-6xl mx-auto px-4 py-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+          {/* Brand */}
+          <div>
+            <Link to="/" className="flex items-center gap-1.5 mb-4">
+              <MdFavorite className="text-xl text-primary-500" />
+              <span className="text-lg font-extrabold tracking-tight">
+                <span className="text-neutral-900">Medi</span>
+                <span className="text-primary-500">Cure</span>
+              </span>
+            </Link>
+            <p className="text-neutral-500 text-sm leading-relaxed mb-5">
+              Your trusted partner in emergency healthcare.
+            </p>
+            <div className="flex gap-2">
+              {[FaFacebook, FaTwitter, FaInstagram, FaLinkedin].map(
+                (Icon, i) => (
+                  <a
+                    key={i}
+                    href="#"
+                    className="w-8 h-8 rounded-lg bg-white border border-neutral-200 hover:border-primary-200 hover:bg-primary-50 flex items-center justify-center text-neutral-400 hover:text-primary-500 transition-all"
+                  >
+                    <Icon className="text-xs" />
+                  </a>
+                )
+              )}
+            </div>
+          </div>
 
-        {/* Social Media Icons */}
-        <ul className="flex justify-center md:justify-start gap-6">
-          {[
-            { label: "Facebook", icon: "fab fa-facebook" },
-            { label: "Twitter", icon: "fab fa-twitter" },
-            { label: "Instagram", icon: "fab fa-instagram" },
-            { label: "LinkedIn", icon: "fab fa-linkedin" },
-          ].map(({ label, icon }) => (
-            <li key={label}>
-              <a
-                href="#"
-                aria-label={label}
-                className="text-gray-300 hover:text-teal-300 transition-transform transform hover:scale-110"
-              >
-                <i className={`${icon} text-2xl`} aria-hidden="true"></i>
-                <span className="sr-only">{label}</span>
-              </a>
-            </li>
-          ))}
-        </ul>
+          {/* Links */}
+          <div>
+            <h3 className="text-xs font-semibold uppercase tracking-wider text-neutral-900 mb-4">
+              Quick Links
+            </h3>
+            <ul className="space-y-2">
+              {[
+                { label: "Home", path: "/" },
+                { label: "Services", path: "/services" },
+                { label: "About Us", path: "/about" },
+                { label: "Contact", path: "/contact" },
+              ].map((link) => (
+                <li key={link.label}>
+                  <Link
+                    to={link.path}
+                    className="text-neutral-500 hover:text-primary-600 text-sm transition-colors"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
 
-        {/* Copyright */}
-        <div className="text-center text-xs text-gray-500">
-          © {new Date().getFullYear()} Mediator Platform. All rights reserved.
+          {/* Contact */}
+          <div>
+            <h3 className="text-xs font-semibold uppercase tracking-wider text-neutral-900 mb-4">
+              Contact
+            </h3>
+            <ul className="space-y-3">
+              <li className="flex items-center gap-2 text-neutral-500 text-sm">
+                <IoMailOutline className="text-primary-500" />
+                contact@medicure.com
+              </li>
+              <li className="flex items-center gap-2 text-neutral-500 text-sm">
+                <IoCallOutline className="text-primary-500" />
+                +91 98263 89201
+              </li>
+              <li className="flex items-center gap-2 text-neutral-500 text-sm">
+                <IoLocationOutline className="text-primary-500" />
+                Wellness City
+              </li>
+            </ul>
+          </div>
+
+          {/* Newsletter */}
+          <div>
+            <h3 className="text-xs font-semibold uppercase tracking-wider text-neutral-900 mb-4">
+              Newsletter
+            </h3>
+            <p className="text-neutral-500 text-sm mb-4">
+              Get healthcare tips and updates.
+            </p>
+            <form onSubmit={handleSubscribe} className="flex">
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Your email"
+                className="flex-1 px-3 py-2 bg-white border border-neutral-200 rounded-l-lg text-sm text-neutral-800 placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
+                required
+              />
+              <button className="px-4 py-2 bg-primary-500 hover:bg-primary-600 rounded-r-lg text-sm font-medium text-white transition-colors">
+                Subscribe
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      {/* Bottom */}
+      <div className="border-t border-neutral-100">
+        <div className="max-w-6xl mx-auto px-4 py-5 flex items-center justify-between">
+          <p className="text-neutral-400 text-xs">
+            &copy; {new Date().getFullYear()} MediCure
+          </p>
+          <button
+            onClick={scrollToTop}
+            className="flex items-center gap-1 text-neutral-400 hover:text-primary-500 text-xs transition-colors"
+          >
+            Back to top
+            <MdKeyboardArrowUp />
+          </button>
         </div>
       </div>
     </footer>

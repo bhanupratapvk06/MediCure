@@ -1,60 +1,127 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
+import {
+  MdPeople,
+  MdLocationCity,
+  MdLocalShipping,
+  MdHealthAndSafety,
+  MdStar,
+} from "react-icons/md";
+
+const AnimatedCounter = ({ target, suffix = "", duration = 2000 }) => {
+  const [count, setCount] = useState(0);
+  const [isVisible, setIsVisible] = useState(false);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) setIsVisible(true);
+      },
+      { threshold: 0.3 }
+    );
+    if (ref.current) observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!isVisible) return;
+    let startTime;
+    const animate = (currentTime) => {
+      if (!startTime) startTime = currentTime;
+      const progress = Math.min((currentTime - startTime) / duration, 1);
+      setCount(Math.floor(progress * target));
+      if (progress < 1) requestAnimationFrame(animate);
+    };
+    requestAnimationFrame(animate);
+  }, [isVisible, target, duration]);
+
+  return (
+    <span ref={ref}>
+      {count.toLocaleString()}
+      {suffix}
+    </span>
+  );
+};
 
 const Insights = () => {
-  const data = [
-    { value: "800k+", label: "Lives Assisted" },
-    { value: "500+", label: "Cities in India" },
-    { value: "15,000", label: "Fleet Size" },
-    { value: "200k+", label: "COVID Patients Assisted" },
-    { value: "8m+", label: "Subscribers" },
+  const stats = [
+    {
+      value: 800,
+      suffix: "K+",
+      label: "Lives Assisted",
+      icon: <MdPeople />,
+    },
+    {
+      value: 500,
+      suffix: "+",
+      label: "Cities",
+      icon: <MdLocationCity />,
+    },
+    {
+      value: 15,
+      suffix: "K+",
+      label: "Fleet Size",
+      icon: <MdLocalShipping />,
+    },
+    {
+      value: 200,
+      suffix: "K+",
+      label: "COVID Patients",
+      icon: <MdHealthAndSafety />,
+    },
+    {
+      value: 8,
+      suffix: "M+",
+      label: "Subscribers",
+      icon: <MdStar />,
+    },
   ];
 
   return (
-    <div className="w-full flex justify-center items-center mt-14 mb-14 px-4">
-      <div className="relative max-w-6xl w-full border-2 rounded-2xl flex flex-col justify-center items-center p-12 bg-[#fafafa]">
+    <section className="py-20 lg:py-28 bg-white">
+      <div className="max-w-6xl mx-auto px-4">
+        {/* Header */}
+        <div className="text-center mb-14">
+          <span className="text-primary-600 text-sm font-semibold tracking-wide uppercase">
+            Our Impact
+          </span>
+          <h2 className="mt-3 text-3xl lg:text-4xl font-bold text-neutral-900 tracking-tight">
+            Numbers that speak
+          </h2>
+        </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-4 w-full text-center">
-          {data.map((item, index) => (
+        {/* Stats */}
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+          {stats.map((stat, index) => (
             <div
               key={index}
-              className={`p-4 rounded-2xl ${
-                index === 0 ? "bg-teal-100" : "bg-gray-50"
-              } flex flex-col items-center justify-center`}
+              className="group relative p-6 rounded-2xl bg-neutral-50 border border-neutral-100 text-center hover:bg-primary-600 hover:border-primary-600 transition-all duration-300"
             >
-              <span
-                className={`text-2xl md:text-3xl font-bold ${
-                  index === 0 ? "text-teal-600" : "text-black"
-                }`}
-              >
-                {item.value}
-              </span>
-              <span
-                className={`text-sm md:text-md mt-2 ${
-                  index === 0 ? "text-teal-600" : "text-gray-500"
-                }`}
-              >
-                {item.label}
-              </span>
+              <div className="text-2xl text-primary-500 mb-3 group-hover:text-white/80 transition-colors">
+                {stat.icon}
+              </div>
+              <div className="text-2xl lg:text-3xl font-extrabold text-neutral-900 group-hover:text-white transition-colors">
+                <AnimatedCounter target={stat.value} suffix={stat.suffix} />
+              </div>
+              <div className="text-xs text-neutral-500 font-medium mt-1 group-hover:text-white/70 transition-colors">
+                {stat.label}
+              </div>
             </div>
           ))}
         </div>
 
-        {/* Headings */}
-        <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 px-6 py-2 bg-[#fafafa] rounded-2xl">
-          <h1 className="text-lg md:text-xl font-bold text-center">
-            MediCure Insights
-          </h1>
-        </div>
-        <div className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 px-6 py-2 bg-[#fafafa] rounded-2xl">
-          <h1 className="text-sm md:text-md font-normal text-gray-500 text-center">
-            Response Time:{" "}
-            <span className="text-teal-500 font-bold">
-              Less than 15 mins
+        {/* Response time badge */}
+        <div className="text-center mt-10">
+          <div className="inline-flex items-center gap-2 px-5 py-2.5 bg-teal-50 border border-teal-100 rounded-full">
+            <span className="w-2 h-2 bg-teal-500 rounded-full animate-pulse" />
+            <span className="text-sm text-teal-700 font-medium">
+              Average Response Time:{" "}
+              <span className="font-bold">Less than 15 minutes</span>
             </span>
-          </h1>
+          </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

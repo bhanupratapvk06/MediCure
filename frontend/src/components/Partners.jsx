@@ -1,86 +1,89 @@
 import React from "react";
-import {
-  FaBuilding,
-  FaCogs,
-  FaHooli,
-  FaChartLine,
-  FaImdb,
-  FaMicrosoft,
-  FaMedkit,
-} from "react-icons/fa";
 import { IoCall } from "react-icons/io5";
 import {
-  SiGodaddy,
-  SiOracle,
-  SiTata,
-  SiInfosys,
-  SiCisco,
-  SiNokia,
-} from "react-icons/si";
-import { GiHeartBottle } from "react-icons/gi";
+  FaHospital,
+  FaHeartbeat,
+  FaStethoscope,
+  FaUserMd,
+  FaAmbulance,
+  FaMedkit,
+  FaPills,
+} from "react-icons/fa";
+import { Link } from "react-router-dom";
 
-const companies = [
-  { name: "DLF", icon: <FaBuilding className="text-6xl sm:text-8xl text-blue-600" /> },
-  { name: "Cisco", icon: <SiCisco className="text-6xl sm:text-8xl text-green-600" /> },
-  { name: "Nokia", icon: <SiNokia className="text-6xl sm:text-8xl text-blue-400" /> },
-  { name: "Gartner", icon: <FaChartLine className="text-6xl sm:text-8xl text-purple-600" /> },
-  { name: "HCL", icon: <FaHooli className="text-6xl sm:text-8xl text-red-500" /> },
-  { name: "Godrej", icon: <SiGodaddy className="text-6xl sm:text-8xl text-green-500" /> },
-  { name: "Infosys", icon: <SiInfosys className="text-6xl sm:text-8xl text-blue-700" /> },
-  { name: "TCS", icon: <SiTata className="text-6xl sm:text-8xl text-orange-500" /> },
-  { name: "Wipro", icon: <FaCogs className="text-6xl sm:text-8xl text-gray-500" /> },
-  { name: "IBM", icon: <FaImdb className="text-6xl sm:text-8xl text-black" /> },
-  { name: "Microsoft", icon: <FaMicrosoft className="text-6xl sm:text-8xl text-blue-600" /> },
-  { name: "Oracle", icon: <SiOracle className="text-6xl sm:text-8xl text-red-600" /> },
+const partners = [
+  { name: "Apollo Hospitals", icon: <FaHospital className="text-3xl text-primary-400" /> },
+  { name: "Fortis Healthcare", icon: <FaHeartbeat className="text-3xl text-rose-400" /> },
+  { name: "Max Healthcare", icon: <FaStethoscope className="text-3xl text-teal-400" /> },
+  { name: "Medanta", icon: <FaUserMd className="text-3xl text-primary-400" /> },
+  { name: "AIIMS", icon: <FaHospital className="text-3xl text-rose-400" /> },
+  { name: "Manipal", icon: <FaAmbulance className="text-3xl text-teal-400" /> },
+  { name: "Narayana", icon: <FaMedkit className="text-3xl text-primary-400" /> },
+  { name: "Sun Pharma", icon: <FaPills className="text-3xl text-rose-400" /> },
+  { name: "Cipla", icon: <FaPills className="text-3xl text-teal-400" /> },
+  { name: "Dr. Reddy's", icon: <FaStethoscope className="text-3xl text-primary-400" /> },
+  { name: "Lupin", icon: <FaMedkit className="text-3xl text-rose-400" /> },
+  { name: "Zydus", icon: <FaHeartbeat className="text-3xl text-teal-400" /> },
 ];
 
 const OurPartners = () => {
   return (
-    <div className="relative py-12 sm:py-20 bg-[#fafafa] flex flex-col items-center">
-      <h2 className="text-center text-xl sm:text-2xl font-bold text-gray-800 mb-8 sm:mb-12">
-        Our Partners
-      </h2>
-      <div className="w-[90%] lg:w-[70%] mx-auto grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6">
-        {companies.map((company, index) => (
-          <div
-            key={index}
-            className="flex flex-col items-center p-2 opacity-50 hover:opacity-100 transition-opacity duration-300"
-          >
-            {company.icon}
-          </div>
-        ))}
-      </div>
-      {/* Buttons */}
-      <div className="flex flex-col sm:flex-row gap-8 sm:gap-5 mt-16">
-        <div>
-          <p className="text-[1rem] tracking-wider font-semibold text-center mb-3">
-            Book Medicines
+    <section className="py-20 lg:py-28 bg-neutral-50">
+      <div className="max-w-6xl mx-auto px-4">
+        {/* Header */}
+        <div className="text-center mb-14">
+          <span className="text-primary-600 text-sm font-semibold tracking-wide uppercase">
+            Trusted Network
+          </span>
+          <h2 className="mt-3 text-3xl lg:text-4xl font-bold text-neutral-900 tracking-tight">
+            Our Partners
+          </h2>
+          <p className="mt-3 text-neutral-500 text-lg max-w-xl mx-auto">
+            Partnered with India's leading hospitals and pharma companies
           </p>
-          <div
-            className="w-48 sm:w-52 py-3 hover:tracking-widest text-center hover:bg-teal-600 bg-teal-500 text-white font-semibold rounded-lg transition-all duration-300 cursor-pointer"
-          >
-            Subscribe
+        </div>
+
+        {/* Partners Grid */}
+        <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-3">
+          {partners.map((partner, index) => (
+            <div
+              key={index}
+              className="flex flex-col items-center justify-center p-4 bg-white rounded-xl border border-neutral-100 hover:shadow-sm hover:border-neutral-200 transition-all duration-200 gap-2"
+            >
+              {partner.icon}
+              <span className="text-xs text-neutral-500 font-medium text-center">
+                {partner.name}
+              </span>
+            </div>
+          ))}
+        </div>
+
+        {/* CTA */}
+        <div className="mt-16 bg-primary-600 rounded-2xl p-8 md:p-12 text-center">
+          <h3 className="text-2xl md:text-3xl font-bold text-white mb-3">
+            Need Emergency Help?
+          </h3>
+          <p className="text-primary-100 mb-8 max-w-lg mx-auto">
+            Our network of verified partners is ready to assist you 24/7
+          </p>
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+            <Link
+              to="/new-emergency-request"
+              className="inline-flex items-center justify-center px-7 py-3 bg-white text-primary-600 font-semibold rounded-xl hover:bg-neutral-50 transition-colors"
+            >
+              Book Medicines
+            </Link>
+            <a
+              href="tel:+919826389201"
+              className="inline-flex items-center justify-center gap-2 px-7 py-3 border border-white/30 text-white font-semibold rounded-xl hover:bg-white/10 transition-colors"
+            >
+              <IoCall />
+              +91 98263 89201
+            </a>
           </div>
         </div>
-        <div>
-          <p className="text-[1rem] tracking-wider font-semibold text-center mb-3">
-            Call Our Assistance
-          </p>
-          <div className="w-48 sm:w-52 py-3 flex text-center hover:tracking-widest bg-white border-2 border-teal-500 hover:border-blue-400 hover:text-blue-400 text-teal-400 font-bold rounded-lg transition-all duration-300 cursor-pointer justify-center gap-1">
-            <IoCall size={22} />
-            <p>+919826389201</p>
-          </div>
-        </div>
       </div>
-      <FaMedkit
-        size={60}
-        className="absolute text-teal-300 opacity-40 rotate-45 bottom-6 left-10 sm:bottom-10 sm:left-52"
-      />
-      <GiHeartBottle
-        size={60}
-        className="absolute text-red-300 opacity-40 rotate-45 bottom-6 right-10 sm:bottom-10 sm:right-52"
-      />
-    </div>
+    </section>
   );
 };
 

@@ -2,8 +2,7 @@ import React, { useEffect, useState } from "react";
 import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
 import Pagination from "@mui/material/Pagination";
-import axios from "axios";
-import { BiArrowToRight, BiSolidRightArrow } from "react-icons/bi";
+import axios from "../utils/axios";
 import { AiOutlineArrowRight } from "react-icons/ai";
 
 const Medication = () => {
@@ -14,7 +13,7 @@ const Medication = () => {
 
   const GetMedicines = async () => {
     try {
-      const response = await axios.get("http://localhost:5001/api/medicine/get-medicines");
+      const response = await axios.get("/medicine");
       if (response.status === 200) {
         setMedicines(response.data.medicines);
       }
@@ -48,7 +47,7 @@ const Medication = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#fafafa] flex flex-col font-['Fjalla One']">
+    <div className="min-h-screen bg-[#fafafa] flex flex-col font-['Inter',sans-serif]">
       <NavBar />
       <main className="flex-grow px-4 sm:px-6 lg:px-8">
         {/* Search Bar */}
@@ -59,7 +58,7 @@ const Medication = () => {
               placeholder="Search for rare medicines..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full px-4 sm:px-6 py-3 bg-white border border-gray-300 rounded-full shadow-sm shadow-teal-200 focus:outline-none focus:ring-2 focus:ring-teal-500 text-sm sm:text-base"
+              className="w-full px-4 sm:px-6 py-3 bg-white border border-gray-300 rounded-full shadow-sm shadow-blue-100 focus:outline-none focus:ring-2 focus:ring-primary-400 text-sm sm:text-base"
             />
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -89,7 +88,7 @@ const Medication = () => {
               paginatedMedicines.map((medicine, index) => (
                 <div
                   key={index}
-                  className="bg-white p-4 rounded-lg border border-teal-100 shadow shadow-teal-50 flex flex-col"
+                  className="bg-white p-4 rounded-lg border border-primary-100 shadow shadow-blue-100 flex flex-col"
                 >
                   <div className="flex flex-col sm:flex-row gap-4">
                     <div className="flex-shrink-0">
@@ -112,7 +111,7 @@ const Medication = () => {
                       </p>
                       <button
                         onClick={() => handleGetDirections(medicine.location)}
-                        className="mt-auto py-2 bg-white border border-teal-100 rounded-full shadow-sm shadow-teal-50 text-gray-600 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-teal-500 text-sm flex items-center justify-center sm:self-end self-center gap-2 px-2 w-40 sm:w-28 cursor-pointer"
+                        className="mt-auto py-2 bg-white border border-primary-100 rounded-full shadow-sm shadow-blue-100 text-gray-600 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-primary-400 text-sm flex items-center justify-center sm:self-end self-center gap-2 px-2 w-40 sm:w-28 cursor-pointer"
                       >
                         <p className="text-sm font-medium">Directions</p>
                         <AiOutlineArrowRight className="text-sm font-medium"/>
@@ -141,7 +140,7 @@ const Medication = () => {
                 size="medium"
                 sx={{
                   '& .MuiPaginationItem-root': {
-                    color: '#14b8a6',
+                    color: '#3b82f6',
                   },
                 }}
               />

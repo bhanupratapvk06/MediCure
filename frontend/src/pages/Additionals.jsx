@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
@@ -9,6 +9,7 @@ import {
 } from "react-icons/md";
 
 import { CheckCircle, MapPin } from "lucide-react";
+import axios from "../utils/axios";
 
 const VerifiedSuppliers = () => {
   const navigate = useNavigate();
@@ -41,7 +42,7 @@ const VerifiedSuppliers = () => {
   );
 
   return (
-    <div className="min-h-screen bg-[#fafafa] font-['Fjalla One']">
+    <div className="min-h-screen bg-[#fafafa] font-['Inter',sans-serif]">
       <NavBar />
 
       <div className="max-w-6xl mx-auto mb-20 mt-20">
@@ -61,7 +62,7 @@ const VerifiedSuppliers = () => {
               placeholder="Search for suppliers..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
             />
           </div>
 
@@ -71,7 +72,7 @@ const VerifiedSuppliers = () => {
               filteredSuppliers.map((supplier, index) => (
                 <li
                   key={index}
-                  className="bg-white p-4 rounded-lg shadow shadow-teal-50 border border-teal-100 hover:bg-teal-50 transition-all duration-300 cursor-pointer"
+                  className="bg-white p-4 rounded-lg shadow shadow-blue-100 border border-primary-100 hover:bg-primary-50 transition-all duration-300 cursor-pointer"
                   onClick={() => alert(`Navigating to ${supplier.name}`)}
                 >
                   <div className="flex items-center justify-between">
@@ -79,7 +80,7 @@ const VerifiedSuppliers = () => {
                       {supplier.name}
                     </h2>
                     {supplier.verified && (
-                      <CheckCircle className="text-teal-400" size={20} />
+                      <CheckCircle className="text-primary-400" size={20} />
                     )}
                   </div>
                   <p className="text-sm text-gray-600 flex items-center mt-2">
@@ -100,7 +101,7 @@ const VerifiedSuppliers = () => {
           <div className="mt-6">
             <button
               onClick={() => navigate("/services")}
-              className="px-6 py-2 bg-teal-400 text-white rounded-full hover:bg-teal-500 transition-all duration-300"
+              className="px-6 py-2 bg-primary-500 text-white rounded-full hover:bg-primary-600 transition-all duration-300"
             >
               Back to Services
             </button>
@@ -141,7 +142,7 @@ const SecurePrescriptionUpload = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#fafafa] font-['Fjalla One']">
+    <div className="min-h-screen bg-[#fafafa] font-['Inter',sans-serif]">
       <NavBar />
 
       <div className="max-w-6xl mx-auto mb-20 mt-20">
@@ -154,7 +155,7 @@ const SecurePrescriptionUpload = () => {
             data is handled with the highest level of security and privacy.
           </p>
 
-          <div className="bg-white p-6 rounded-lg shadow shadow-teal-50 border border-teal-100">
+          <div className="bg-white p-6 rounded-lg shadow shadow-blue-100 border border-primary-100">
             <form onSubmit={handleSubmit}>
               <div className="mb-4">
                 <label className="block text-gray-700 text-sm font-medium mb-2">
@@ -164,7 +165,7 @@ const SecurePrescriptionUpload = () => {
                   type="file"
                   accept=".pdf,.jpg,.jpeg,.png"
                   onChange={handleFileChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
                 />
                 <p className="text-sm text-gray-500 mt-1">
                   Accepted formats: PDF, JPG, PNG
@@ -175,7 +176,7 @@ const SecurePrescriptionUpload = () => {
                 <p
                   className={`text-sm mt-2 ${
                     uploadStatus.includes("Successful")
-                      ? "text-teal-500"
+                      ? "text-primary-500"
                       : "text-red-500"
                   }`}
                 >
@@ -185,7 +186,7 @@ const SecurePrescriptionUpload = () => {
 
               <button
                 type="submit"
-                className="w-full px-4 py-2 bg-teal-400 text-white rounded-full hover:bg-teal-500 transition-all duration-300 mt-4"
+                className="w-full px-4 py-2 bg-primary-500 text-white rounded-full hover:bg-primary-600 transition-all duration-300 mt-4"
               >
                 Submit
               </button>
@@ -197,7 +198,7 @@ const SecurePrescriptionUpload = () => {
             <h2 className="text-lg font-medium text-black mb-2">Need Help?</h2>
             <p className="text-gray-600">
               If you experience any issues uploading your prescription, please{" "}
-              <a href="/help" className="text-teal-400 hover:underline">
+              <a href="/contact" className="text-primary-400 hover:underline">
                 contact support
               </a>
               .
@@ -207,7 +208,7 @@ const SecurePrescriptionUpload = () => {
           <div className="mt-6 ml-5">
             <button
               onClick={() => navigate("/services")}
-              className="px-6 py-2 bg-teal-400 text-white rounded-full hover:bg-teal-500 transition-all duration-300"
+              className="px-6 py-2 bg-primary-500 text-white rounded-full hover:bg-primary-600 transition-all duration-300"
             >
               Back to Services
             </button>
@@ -222,14 +223,31 @@ const SecurePrescriptionUpload = () => {
 
 const PriorityEmergencyHandling = () => {
   const navigate = useNavigate();
-  const activeRequests = [];
+  const [activeRequests, setActiveRequests] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchRequests = async () => {
+      try {
+        const response = await axios.get("/emergency");
+        if (response.status === 200) {
+          setActiveRequests(response.data.emergencyRequests || []);
+        }
+      } catch (error) {
+        console.error("Error fetching emergency requests:", error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchRequests();
+  }, []);
 
   const handleNewRequest = () => {
     navigate("/new-emergency-request");
   };
 
   return (
-    <div className="min-h-screen flex flex-col justify-between bg-[#fafafa] font-['Fjalla One']">
+    <div className="min-h-screen flex flex-col justify-between bg-[#fafafa] font-['Inter',sans-serif]">
       <NavBar />
 
       <div className="max-w-6xl mx-auto mb-20 mt-32">
@@ -242,16 +260,20 @@ const PriorityEmergencyHandling = () => {
             Our system ensures rapid response for emergencies.
           </p>
 
-          {activeRequests.length > 0 ? (
-            <div className="bg-white p-6 rounded-lg shadow shadow-teal-50 border border-teal-100">
+          {loading ? (
+            <div className="bg-white p-6 rounded-lg shadow shadow-blue-100 border border-primary-100">
+              <p className="text-gray-700">Loading emergency requests...</p>
+            </div>
+          ) : activeRequests.length > 0 ? (
+            <div className="bg-white p-6 rounded-lg shadow shadow-blue-100 border border-primary-100">
               <h2 className="text-lg font-medium text-gray-700 mb-4">
                 Active Emergency Requests
               </h2>
               <ul>
-                {activeRequests.map((request, index) => (
+                {activeRequests.map((request) => (
                   <li
-                    key={index}
-                    className="flex justify-between items-center bg-teal-50 p-4 rounded-lg mb-4 shadow-sm border border-teal-100"
+                    key={request._id}
+                    className="flex justify-between items-center bg-primary-50 p-4 rounded-lg mb-4 shadow-sm border border-primary-100"
                   >
                     <div>
                       <h3 className="text-md font-semibold text-gray-800">
@@ -260,27 +282,28 @@ const PriorityEmergencyHandling = () => {
                       <p className="text-sm text-gray-600">
                         {request.description}
                       </p>
+                      <p className="text-xs text-gray-500 mt-1">
+                        Priority: {request.priority} | Location: {request.location}
+                      </p>
                     </div>
-                    <button
-                      onClick={() =>
-                        navigate(`/emergency-details/${request.id}`)
-                      }
-                      className="text-teal-400 hover:underline"
-                    >
-                      View Details
-                    </button>
                   </li>
                 ))}
               </ul>
+              <button
+                onClick={handleNewRequest}
+                className="mt-4 px-6 py-2 bg-primary-500 text-white rounded-full hover:bg-primary-600 transition-all duration-300 cursor-pointer"
+              >
+                Flag a New Emergency
+              </button>
             </div>
           ) : (
-            <div className="bg-white p-6 rounded-lg shadow shadow-teal-50 border border-teal-100">
+            <div className="bg-white p-6 rounded-lg shadow shadow-blue-100 border border-primary-100">
               <p className="text-gray-700 mb-4">
                 No active emergency requests.
               </p>
               <button
                 onClick={handleNewRequest}
-                className="px-6 py-2 bg-teal-400 text-white rounded-full hover:bg-teal-500 transition-all duration-300 cursor-pointer"
+                className="px-6 py-2 bg-primary-500 text-white rounded-full hover:bg-primary-600 transition-all duration-300 cursor-pointer"
               >
                 Flag a New Emergency
               </button>
@@ -301,7 +324,7 @@ const PriorityEmergencyHandling = () => {
           <div className="mt-6 ml-5">
             <button
               onClick={() => navigate("/services")}
-              className="px-6 py-2 bg-teal-400 text-white rounded-full hover:bg-gray-500 transition-all duration-300"
+              className="px-6 py-2 bg-primary-500 text-white rounded-full hover:bg-primary-600 transition-all duration-300"
             >
               Back to Services
             </button>
@@ -316,14 +339,31 @@ const PriorityEmergencyHandling = () => {
 
 const RareInjectionAssistance = () => {
   const navigate = useNavigate();
-  const availableInjections = []; // Placeholder for actual rare injection data
+  const [availableInjections, setAvailableInjections] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchInjections = async () => {
+      try {
+        const response = await axios.get("/rareInjection");
+        if (response.status === 200) {
+          setAvailableInjections(response.data.rareInjections || []);
+        }
+      } catch (error) {
+        console.error("Error fetching rare injections:", error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchInjections();
+  }, []);
 
   const handleRequestInjection = () => {
     navigate("/request-rare-injection");
   };
 
   return (
-    <div className="min-h-screen flex flex-col justify-between bg-[#fafafa] font-['Fjalla One']">
+    <div className="min-h-screen flex flex-col justify-between bg-[#fafafa] font-['Inter',sans-serif]">
       <NavBar />
 
       <div className="max-w-6xl mx-auto mb-20 mt-20">
@@ -342,7 +382,7 @@ const RareInjectionAssistance = () => {
               <input
                 type="text"
                 placeholder="Search for Past Injection Requests..."
-                className="w-full px-6 py-3 bg-white border border-gray-300 rounded-full shadow-sm shadow-teal-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
+                className="w-full px-6 py-3 bg-white border border-gray-300 rounded-full shadow-sm shadow-blue-100 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
               />
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -355,42 +395,55 @@ const RareInjectionAssistance = () => {
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   strokeWidth="2"
-                  d="M8 16l-4-4m0 0l4-4m-4 4h16"
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
                 />
               </svg>
             </div>
           </div>
 
           {/* Available Injections Section */}
-          {availableInjections.length > 0 ? (
-            <div className="bg-white p-6 rounded-lg shadow shadow-teal-50 border border-teal-100">
+          {loading ? (
+            <div className="bg-white p-6 rounded-lg shadow shadow-blue-100 border border-primary-100">
+              <p className="text-gray-700">Loading rare injections...</p>
+            </div>
+          ) : availableInjections.length > 0 ? (
+            <div className="bg-white p-6 rounded-lg shadow shadow-blue-100 border border-primary-100">
               <h2 className="text-lg font-medium text-gray-700 mb-4">
                 Available Rare Injections
               </h2>
               <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {availableInjections.map((injection, index) => (
+                {availableInjections.map((injection) => (
                   <li
-                    key={index}
-                    className="bg-teal-50 p-4 rounded-lg shadow-sm border border-teal-100"
+                    key={injection._id}
+                    className="bg-primary-50 p-4 rounded-lg shadow-sm border border-primary-100"
                   >
                     <h3 className="text-md font-semibold text-gray-800">
                       {injection.name}
                     </h3>
                     <p className="text-sm text-gray-600">
-                      {injection.description}
+                      Quantity: {injection.quantity} | Urgency: {injection.urgency}
+                    </p>
+                    <p className="text-xs text-gray-500 mt-1">
+                      Location: {injection.location} | Contact: {injection.contact}
                     </p>
                   </li>
                 ))}
               </ul>
+              <button
+                onClick={handleRequestInjection}
+                className="mt-4 px-6 py-2 bg-primary-500 text-white rounded-full hover:bg-primary-600 transition-all duration-300"
+              >
+                Request a Rare Injection
+              </button>
             </div>
           ) : (
-            <div className="bg-white p-6 rounded-lg shadow shadow-teal-50 border border-teal-100">
+            <div className="bg-white p-6 rounded-lg shadow shadow-blue-100 border border-primary-100">
               <p className="text-gray-700 mb-4">
                 No rare injections are currently available.
               </p>
               <button
                 onClick={handleRequestInjection}
-                className="px-6 py-2 bg-teal-400 text-white rounded-full hover:bg-teal-500 transition-all duration-300"
+                className="px-6 py-2 bg-primary-500 text-white rounded-full hover:bg-primary-600 transition-all duration-300"
               >
                 Request a Rare Injection
               </button>
@@ -408,44 +461,11 @@ const RareInjectionAssistance = () => {
             </p>
           </div>
 
-          {/* Educational Resources */}
-          <div className="mt-6 ml-5">
-            <h2 className="text-lg font-medium text-black mb-2">
-              Learn About Rare Injections
-            </h2>
-            <ul className="list-disc list-inside text-gray-600">
-              <li>
-                <a
-                  href="/resources/rare-injections"
-                  className="text-teal-400 hover:underline"
-                >
-                  What are rare injections?
-                </a>
-              </li>
-              <li>
-                <a
-                  href="/resources/safety-guidelines"
-                  className="text-teal-400 hover:underline"
-                >
-                  Safety guidelines for use
-                </a>
-              </li>
-              <li>
-                <a
-                  href="/resources/hospitals"
-                  className="text-teal-400 hover:underline"
-                >
-                  List of collaborating hospitals
-                </a>
-              </li>
-            </ul>
-          </div>
-
           {/* Navigation Button */}
           <div className="mt-6 ml-5">
             <button
               onClick={() => navigate("/services")}
-              className="px-6 py-2 bg-teal-400 text-white rounded-full hover:bg-gray-500 transition-all duration-300"
+              className="px-6 py-2 bg-primary-500 text-white rounded-full hover:bg-primary-600 transition-all duration-300"
             >
               Back to Services
             </button>

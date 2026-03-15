@@ -1,29 +1,31 @@
-import ChooseUs from "../components/ChooseUs"
-import Features from "../components/Features"
-import Footer from "../components/Footer"
-import Header from "../components/Header"
-import Insights from "../components/Insights"
-import MedNews from "../components/MedNews"
-import NavBar from "../components/NavBar"
-import OurPartners from "../components/Partners"
-import Testimonies from "../components/Testimonies"
+import ChooseUs from "../components/ChooseUs";
+import Features from "../components/Features";
+import Footer from "../components/Footer";
+import Header from "../components/Header";
+import HowItWorks from "../components/HowItWorks";
+import Insights from "../components/Insights";
+import MedNews from "../components/MedNews";
+import NavBar from "../components/NavBar";
+import OurPartners from "../components/Partners";
+import Testimonies from "../components/Testimonies";
+import FAQ from "../components/FAQ";
 
 const Home = () => {
   return (
-    <div className="relative h-full w-screen bg-[#fafafa] font-[Work Sans] flex flex-col">
+    <div className="relative w-full bg-white font-['Inter',sans-serif] flex flex-col">
       <NavBar />
-      <Header/>
-      <div className="hidden sm:block">
-      <ChooseUs/>
-      </div>
-      <Features/>
-      <Insights/>
-      <MedNews/>
-      <Testimonies/>
-      <OurPartners/>
-      <Footer/>
+      <Header />
+      <HowItWorks />
+      <ChooseUs />
+      <Features />
+      <Insights />
+      <MedNews />
+      <Testimonies />
+      <OurPartners />
+      <FAQ />
+      <Footer />
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;
