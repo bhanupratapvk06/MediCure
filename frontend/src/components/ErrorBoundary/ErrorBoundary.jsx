@@ -120,6 +120,7 @@ class ErrorBoundaryClass extends Component {
 }
 
 const ErrorBoundary = (props) => {
+
   return <ErrorBoundaryClass {...props} />;
 };
 
